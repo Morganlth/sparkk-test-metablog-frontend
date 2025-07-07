@@ -1,0 +1,68 @@
+/* [reset] */
+
+/* #IMPORTS */
+
+    /* ##GLOBALS */
+@use '../globals/vars'         as *;
+@use '../globals/placeholders' as *;
+
+/* #THIS */
+
+body, h1, h2, h3, h4, h5, h6, ul, ol, p, figure, blockquote, pre, form, select, option, hr { margin : 0; }
+ul, ol, button, input, textarea, option                                                    { padding: 0; }
+
+h1, h2, h3, h4, h5, h6 { @extend %F_HRT; }
+
+li:not(.\@default) { list-style: none; }
+
+a:not(a[draggable]), img { @extend %NO_DRAG; }
+
+a:not(.\@default) { text-decoration: none; }
+
+button, input, textarea, select, iframe { border: none; }
+
+:is(a, button):not(:focus), input, textarea, [contenteditable="true"] { outline: none; }
+
+button, select { @extend %C_PTR; }
+
+input
+{
+    &:-webkit-autofill, &:-webkit-autofill:is(:hover, :focus, :active)
+    {
+        @each $key, $value in $VARS_DYNAMIC_COLORS
+        {
+            &.b_#{$key} { -webkit-box-shadow: 0 0 0px 1000px $value inset !important; }
+
+            &.c_#{$key}
+            {
+                -webkit-text-fill-color: $value !important;
+
+                caret-color: $value !important;
+            }
+        }
+    }
+
+    &[type="search"]
+    {
+        appearance: none;
+
+        &::-webkit-search-cancel-button
+        {
+            -webkit-appearance: none;
+            appearance        : none;
+        }
+        &::-moz-search-cancel-button
+        {
+            -moz-appearance: none;
+            appearance     : none;
+        }
+    }
+}
+
+hr:not(.\@default)
+{
+    border-top   : solid 1px;
+    border-right : none;
+    border-bottom: none;
+    border-left  : none;
+}

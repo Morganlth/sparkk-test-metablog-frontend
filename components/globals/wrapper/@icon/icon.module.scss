@@ -1,0 +1,12 @@
+/* [icon] */
+
+/* #THIS */
+
+.icon
+{
+    &>* { height: var(--s); }
+
+    &:global(.\@size0)>* { --s: 0; }
+    &:global(.\@size1)>* { --s: 2.8rem; }
+    &:global(.\@size2)>* { --s: 3.6rem; }
+}

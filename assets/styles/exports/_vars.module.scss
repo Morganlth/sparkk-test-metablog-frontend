@@ -1,0 +1,11 @@
+/* [vars] */
+
+/* #IMPORTS */
+
+    /* ##GLOBALS */
+@use '../globals/vars';
+
+/* #EXPORTS */
+
+    /* ##THIS */
+:export { @each $key, $value in vars.$VARS_MAP_FOR_EXPORT { #{$key}: $value; } }

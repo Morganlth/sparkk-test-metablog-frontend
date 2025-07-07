@@ -1,0 +1,15 @@
+/* [signature] */
+
+/* #IMPORTS */
+
+    /* ##GLOBALS */
+@use '../globals/placeholders' as *;
+
+/* #THIS */
+
+html::before
+{
+    @include constructor(p_fxd, t_0, l_0, z_-3, o_0);
+
+    content: '@AUTHOR: #NAME: LE THUAUT Morgan, #JOB: web developer, #EMAIL: morganlethuaut@gmail.com';
+}

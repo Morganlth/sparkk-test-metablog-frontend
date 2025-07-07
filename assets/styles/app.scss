@@ -1,0 +1,88 @@
+/* [APP] */
+
+/* #IMPORTS */
+
+    /* ##SASS */
+@use 'sass:string';
+
+    /* ##GLOBALS */
+@use './globals/vars'         as *;
+@use './globals/placeholders' as *;
+
+    /* ##SNIPPETS */
+@use './snippets/signature';
+@use './snippets/reset';
+@use './snippets/font';
+
+    /* ##UTILS */
+@use './utils/font' as FONT;
+@use './utils/media';
+@use './utils/utils';
+
+/* #ROOT */
+
+    /* ##VARS */
+:root { @include utils.utils_vars($VARS_COLORS); }
+
+    /* ##CLASS */
+@each $name, $prop, $value in $PLACEHOLDERS_DATA { .#{$name} { @extend %#{string.to-upper-case($name)}; } }
+
+    /* ##SUPER CLASS */
+@each $n, $size in $VARS_FONT_SIZE
+{
+    .superTxt#{$n} { @include FONT.font_constructor($family: 'default', $size: $size, $settings: true); }
+    
+    @each $family, $paths, $weight, $style, $space, $height in $VARS_FONT_FACES { .super#{$family}#{$n} { @include FONT.font_constructor(false, $family, $size, $weight, $style, $space, $height, $settings: true); } }
+}
+
+.superTxtSelection { &::selection, & *::selection { @include constructor(b_prm1, c_drk1); } }
+
+.superScrollBar
+{
+    &::-webkit-scrollbar, &::-webkit-scrollbar-thumb { pointer-events: auto !important; }
+
+    &::-webkit-scrollbar
+    {
+        width : $scrollBarSize;
+        height: $scrollBarSize;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+        @include constructor(b_gry1, brd_s_sld);
+    
+        border-width: 3px;
+
+        &:hover { border-width: 1px; }
+    }
+
+    &:not(.\@reverse)
+    {
+        &::-webkit-scrollbar { @extend %B_DRK1; }
+
+        &::-webkit-scrollbar-thumb { @extend %BRD_C_DRK1; }
+    }
+    &.\@reverse
+    {
+        &::-webkit-scrollbar { @extend %B_LGH1; }
+
+        &::-webkit-scrollbar-thumb { @extend %BRD_C_LGH1; }
+    }
+}
+
+/* #THIS */
+
+#APP
+{
+    @extend %MEDIA_QUERIES;
+
+    &, #BODY
+    {
+        scroll-behavior    : smooth;
+        overscroll-behavior: none;
+
+        user-select: none;
+    }
+
+    &:not(&.o_hid) { overflow: hidden overlay !important; }
+}

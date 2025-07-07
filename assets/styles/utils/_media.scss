@@ -1,0 +1,162 @@
+/* [media] */
+
+/* #IMPORTS */
+
+    /* ##SASS */
+@use 'sass:meta';
+@use 'sass:string';
+@use 'sass:list';
+
+    /* ##GLOBALS */
+@use '../globals/vars' as *;
+
+/* #FUNCTIONS */
+
+    /* ##GET */
+@function media_getMedia($prop, $value, $or)
+{
+    $media: '';
+
+    @if   meta.type-of($value) == list { $media: media_getRangeOfRules($prop, $value, $or); }
+    @else                              { $media: media_getRule($prop, $value)             ; }
+
+    @return $media;
+}
+
+@function media_getRule($prop, $value)
+{
+    @if string.slice($prop, 1, 3) == max and meta.type-of($value) == number { $value: $value - 1; }
+
+    @return '(#{$prop}: #{$value})';
+}
+
+@function media_getRangeOfRules($prop, $list, $or)
+{
+    $media : null;
+    $prefix: min;
+
+    @for $i from 1 through 2
+    {
+        $media: '#{media_getSeparationOfRules($media, $or)} #{media_getRule('#{$prefix}-#{$prop}', list.nth($list, $i))}';
+
+        @if $i == 1 { $prefix: max; }
+    }
+
+    @return $media; // *ex: min-width: 768px, screen and max-width: 1440px (params: width, (768px, 1440px), true)
+}
+
+@function media_getSeparationOfRules($media, $or)
+{
+    @if not $media { @return ''; }
+    
+    @if $or { $media: '#{$media}, screen'; }
+
+    @return '#{$media} and';
+}
+
+/* #VARIABLES */
+
+    /* ##THIS */
+$MEDIA_BP_WIDTH_1: $bp4;
+$MEDIA_BP_WIDTH_2: $bp6;
+$MEDIA_BP_HEIGHT : $bp3;
+
+/* #MIXINS */
+
+    /* ##UTILS */
+@mixin media_constructor($props: (/* ?ex: min-width: 768px, min-height: 768px */), $or: false)
+{
+    $media: null;
+
+    @each $prop, $value in $props { $media: '#{media_getSeparationOfRules($media, $or)} #{media_getMedia($prop, $value, $or)}'; }
+
+    @media screen and #{$media} { @content; }
+}
+
+@mixin media_crushed($not: false)
+{
+    $prefix: max;
+
+    @if $not { $prefix: min; }
+
+    @include media_constructor(('#{$prefix}-height': $MEDIA_BP_HEIGHT), $not) { @content; }
+}
+
+@mixin media_mobile($not: false)
+{
+    $prefix: max;
+
+    @if $not { $prefix: min; }
+
+    @include media_constructor(
+        (
+            '#{$prefix}-width' : $MEDIA_BP_WIDTH_1,
+            '#{$prefix}-height': $MEDIA_BP_HEIGHT
+        ),
+        not $not
+    ) { @content; }
+}
+
+@mixin media_tablet($not: false)
+{
+    $prop1 : ($MEDIA_BP_WIDTH_1, $MEDIA_BP_WIDTH_2);
+    $prefix: min;
+
+    @if $not
+    {
+        $prop1 : ($MEDIA_BP_WIDTH_2, $MEDIA_BP_WIDTH_1);
+        $prefix: max;
+    }
+
+    @include media_constructor(
+        (
+            width              : $prop1,
+            '#{$prefix}-height': $MEDIA_BP_HEIGHT
+        ),
+        $not
+    ) { @content; }
+}
+
+@mixin media_desktop($not: false)
+{
+    $prefix: min;
+
+    @if $not { $prefix: max; }
+
+    @include media_constructor(
+        (
+            '#{$prefix}-width' : $MEDIA_BP_WIDTH_2,
+            '#{$prefix}-height': $MEDIA_BP_HEIGHT
+        ),
+        $not
+    ) { @content; }
+}
+
+/* #PLACEHOLDERS */
+
+    /* ##UTILS */
+%MEDIA_QUERIES
+{
+    @include media_crushed { --format: C; }
+
+    @include media_mobile
+    {
+        --format: M;
+
+        font-size: 46.875%; // *1.6rem = 12px
+    }
+
+    @include media_tablet
+    {
+        --format: T;
+
+        font-size: 54.6875%; // *1.6rem = 14px
+    }
+
+    @include media_desktop
+    {
+        --format: D;
+    
+        font-size: 62.5%; // *1.6rem = 16px
+    }
+}

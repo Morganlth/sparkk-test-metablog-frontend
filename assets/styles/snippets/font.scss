@@ -1,0 +1,13 @@
+/* [font] */
+
+/* #IMPORTS */
+
+    /* ##GLOBALS */
+@use '../globals/vars' as *;
+
+    /* ##UTILS */
+@use '../utils/font';
+
+/* #THIS */
+
+@each $family, $paths, $weight, $style, $space, $height in $VARS_FONT_FACES { @include font.font_face($family, $paths, $weight, $style); } 

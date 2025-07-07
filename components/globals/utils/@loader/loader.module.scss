@@ -1,0 +1,27 @@
+/* [loader] */
+
+/* #THIS */
+
+.loader
+{
+    /* *https://cssloaders.github.io/ */
+
+    border-style: solid solid dotted dotted;
+
+    animation: aRotate 2s linear infinite;
+
+    &, &::after { border-width: 3px; }
+
+    &::after
+    {
+        @include constructor(c_void, w_8, h_8, b_brd, brd_r_50, brd_c_prm1);
+
+         border-style: solid solid dotted;
+    
+        animation: aRotationBack 1s linear infinite;
+    }
+        
+    @keyframes aRotate { to { transform: rotate(360deg); } } 
+
+    @keyframes aRotationBack { to { transform: rotate(-360deg); } }
+}

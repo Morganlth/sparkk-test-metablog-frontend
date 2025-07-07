@@ -1,0 +1,67 @@
+/* [utils] */
+
+/* #IMPORTS */
+
+    /* ##SASS */
+@use 'sass:math';
+@use 'sass:list';
+
+/* #FUNCTIONS */
+
+    /* ##UTILS */
+@function utils_stripUnits($n) { @return math.div($n, ($n * 0 + 1)); }
+
+/* #MIXINS */
+
+    /* ##UTILS */
+@mixin utils_vars($map: ()) { @each $key, $value in $map { --#{$key}: #{$value}; } }
+
+@mixin utils_grid($c: false, $r: false, $g: false)
+{
+    $gx: 0%;
+    $gy: 0%;
+
+    @if $g
+    {
+        @if type-of($g) == list
+        {
+            $gx: list.nth($g, 1);
+            $gy: list.nth($g, 2);
+
+            gap: $gy $gx;
+        }
+        @else
+        {
+            $gx: $g;
+            $gy: $g;
+
+            gap: $g;
+        }
+    }
+
+    @if $c
+    {
+        @if   type-of($c) == number { grid-template-columns: repeat($c, calc((100% - $gx * ($c - 1)) / $c)); }
+        @else                       { grid-template-columns: $c;                                             }
+    }
+    @if $r
+    {
+        @if   type-of($r) == number { grid-template-rows: repeat($r, calc((100% - $gy * ($r - 1)) / $r)); }
+        @else                       { grid-template-rows: $r;                                             }
+    }
+}
+
+@mixin utils_placement($c: false, $p: false, $t: false, $r: false, $b: false, $l: false, $z: false, $x: false, $y: false)
+{
+    @if $c { content : $c; }
+    @if $p { position: $p; }
+    @if $t { top     : $t; }
+    @if $r { right   : $r; }
+    @if $b { bottom  : $b; }
+    @if $l { left    : $l; }
+    @if $z { z-index : $z; }
+
+    @if      $x and $y { transform: translate3d($x, $y, 0); }
+    @else if $x        { transform: translate3d($x, 0 , 0); }
+    @else if        $y { transform: translate3d(0 , $y, 0); }
+}
