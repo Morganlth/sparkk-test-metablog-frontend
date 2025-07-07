@@ -1,3 +1,13 @@
+
+# MetaBlog
+
+This project was undertaken as a challenge.<br>
+I discovered Nuxt JS and Strapi.<br>
+As a result, the code may not follow the expected standards.<br>
+I apologize for this.
+
+During development, I did not concern myself with GitHub.
+
 # Nuxt Minimal Starter
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
