@@ -8,6 +8,8 @@ I apologize for this.
 
 During development, I did not concern myself with GitHub.
 
+Backend (Strapi): https://github.com/Morganlth/sparkk-test-metablog-backend
+
 # Nuxt Minimal Starter
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
